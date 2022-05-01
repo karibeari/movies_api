@@ -51,19 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_01_042710) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ratings", force: :cascade do |t|
-    t.float "stars", null: false
-    t.integer "user_id", null: false
-    t.integer "movie_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["movie_id"], name: "index_ratings_on_movie_id"
-    t.index ["user_id", "movie_id"], name: "index_ratings_on_user_id_and_movie_id", unique: true
-  end
-
   add_foreign_key "movie_genres", "genres"
   add_foreign_key "movie_genres", "movies"
   add_foreign_key "movie_production_companies", "movies"
   add_foreign_key "movie_production_companies", "production_companies"
-  add_foreign_key "ratings", "movies"
 end
