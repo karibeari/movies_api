@@ -6,62 +6,19 @@ class ProductionCompaniesController < ApplicationController
   # GET /production_companies or /production_companies.json
   def index
     @production_companies = ProductionCompany.all
+
+    render json: @production_companies
   end
 
   # GET /production_companies/1 or /production_companies/1.json
-  def show; end
+  def show
+    @production_company.year = params[:year]
 
-  # GET /production_companies/new
-  def new
-    @production_company = ProductionCompany.new
+    render json: @production_company.serializable_hash(
+      methods: [:budget, :revenue, :movies_produced]
+    )
   end
-
-  # GET /production_companies/1/edit
-  def edit; end
-
-  # POST /production_companies or /production_companies.json
-  def create
-    @production_company = ProductionCompany.new(production_company_params)
-
-    respond_to do |format|
-      if @production_company.save
-        format.html do
-          redirect_to production_company_url(@production_company),
-                      notice: 'Production company was successfully created.'
-        end
-        format.json { render :show, status: :created, location: @production_company }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @production_company.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /production_companies/1 or /production_companies/1.json
-  def update
-    respond_to do |format|
-      if @production_company.update(production_company_params)
-        format.html do
-          redirect_to production_company_url(@production_company),
-                      notice: 'Production company was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @production_company }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @production_company.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /production_companies/1 or /production_companies/1.json
-  def destroy
-    @production_company.destroy
-
-    respond_to do |format|
-      format.html { redirect_to production_companies_url, notice: 'Production company was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  
 
   private
 
@@ -72,6 +29,6 @@ class ProductionCompaniesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def production_company_params
-    params.require(:production_company).permit(:name)
+    params.require(:production_company).permit(:name, :year)
   end
 end
