@@ -41,7 +41,4 @@ class ProductionCompany < ApplicationRecord
     movies_released_by_year.map(&:revenue).compact.sum
   end
 
-  
-
-
 end

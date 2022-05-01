@@ -5,4 +5,16 @@ class Genre < ApplicationRecord
   has_many :movies, through: :movie_genres
 
   validates :name, presence: true, uniqueness: true
+
+  attr_accessor :year
+
+  def movies_released_by_year
+    movies.release_year(@year)
+  end
+
+  # TODO: any way to reduce queries?
+  def average_annual_popularity
+    pop = movies_released_by_year.map(&:popularity).compact
+    pop.sum / pop.size
+  end
 end
