@@ -61,3 +61,6 @@ Specs are created with [rspec](https://relishapp.com/rspec/docs/gemversions) and
 - More elaborate testing of controllers
 - `ParseMoviesMetadata` performance optimization
 - Request error handling 
+- Class level documentation
+- Method documentation (yard)
+- Swagger/OpenAPI documentation for API endpoints

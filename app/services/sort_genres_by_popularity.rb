@@ -1,5 +1,6 @@
-class SortGenresByPopularity
+# frozen_string_literal: true
 
+class SortGenresByPopularity
   def initialize(year)
     @year = year
     @popularity = {}
@@ -12,7 +13,6 @@ class SortGenresByPopularity
       @popularity[g] = average_popularity
     end
 
-    @popularity.sort_by {|k, v| -v}
+    @popularity.sort_by { |_k, v| -v }
   end
-
 end

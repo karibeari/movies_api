@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
-  
   it 'validates presence of title' do
     expect(Movie.new).not_to be_valid
   end
@@ -23,8 +24,7 @@ RSpec.describe Movie, type: :model do
 
     it 'handles years with no movies' do
       expect(Movie.release_year(1987)).to be_empty
-      expect{Movie.release_year(1987)}.not_to raise_error
+      expect { Movie.release_year(1987) }.not_to raise_error
     end
   end
-  
 end

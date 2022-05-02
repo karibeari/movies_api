@@ -15,8 +15,8 @@ class Genre < ApplicationRecord
   # TODO: any way to reduce queries?
   def average_annual_popularity
     return nil if movies_released_by_year.empty?
+
     pop = movies_released_by_year.map(&:popularity).compact
     pop.sum / pop.size
   end
 end
-

@@ -39,5 +39,4 @@ class ProductionCompany < ApplicationRecord
   def annual_revenue
     movies_released_by_year.map(&:revenue).compact.sum
   end
-
 end
