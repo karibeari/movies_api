@@ -18,11 +18,6 @@ RSpec.describe Genre, type: :model do
     expect(Genre.new).not_to be_valid
   end
 
-  it 'validates uniqueness of name' do
-    expect(Genre.new(name: 'cartoon')).not_to be_valid
-    expect(Genre.new(name: 'drama')).to be_valid
-  end
-
   describe '#movies_released_by_year' do
     before { genre.year = 2021 }
 

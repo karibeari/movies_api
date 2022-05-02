@@ -6,12 +6,6 @@ RSpec.describe Movie, type: :model do
     expect(Movie.new).not_to be_valid
   end
 
-  it 'validates uniqueness of title' do
-    Movie.create(title: 'Batman')
-    expect(Movie.new(title: 'Batman')).not_to be_valid
-    expect(Movie.new(title: 'Batman 2')).to be_valid
-  end
-
   describe '.release_year scope' do
     let!(:jan_movie) { Movie.create(title: Faker::Lorem.word, release_date: Time.new(2021, 1, 1)) }
     let!(:dec_movie) { Movie.create(title: Faker::Lorem.word, release_date: Time.new(2021, 12, 31)) }

@@ -1,17 +1,20 @@
 class ParseMoviesMetadata
 
-  def initialize(csv_file)
+  def initialize(csv_file, movies_to_parse=nil)
     @csv_file = csv_file
+    @movies_to_parse = movies_to_parse
   end
 
   def perform
-    CSV.foreach(@csv_file, headers: true) do |row|
+    CSV.foreach(@csv_file, headers: true).with_index do |row, i|
       ActiveRecord::Base.transaction do
-        # assumption - one record per movie (no split data)
         movie = create_movie(row)
         associate_genres(row, movie.id)
         associate_production_companies(row, movie.id)  
       end
+
+      next if @movies_to_parse.nil?
+      return if i == @movies_to_parse - 1
 
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.info "Skipped importing #{row.dig('id')} - invalid record - #{e}" 
@@ -34,9 +37,9 @@ class ParseMoviesMetadata
   end
 
   def associate_genres(movie_row, movie_id)
-    genres =  eval(movie_row.dig('genres')).map {|genre| genre[:name]}
+    genres =  eval(movie_row.dig('genres'))
     genres.each do |genre|
-      g = Genre.find_or_create_by!(name: genre)
+      g = Genre.find_or_create_by!(genre)
       MovieGenre.create!(
         genre_id: g.id,
         movie_id: movie_id
@@ -47,9 +50,9 @@ class ParseMoviesMetadata
   end
 
   def associate_production_companies(movie_row, movie_id)
-    companies =  eval(movie_row.dig('production_companies')).map {|company| company[:name]}
+    companies =  eval(movie_row.dig('production_companies'))
     companies.each do |company|
-      pc = ProductionCompany.find_or_create_by!(name: company)
+      pc = ProductionCompany.find_or_create_by!(company)
       MovieProductionCompany.create!(
         production_company_id: pc.id,
         movie_id: movie_id
