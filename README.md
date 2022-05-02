@@ -1,24 +1,63 @@
-# README
+# Movies API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This API exposes endpoints that includes data about movies, their production companies, and genres. It is designed to address
+the following at a minimum:
 
-Things you may want to cover:
+- Production Company Details - budget per year
+- Production Company Details - revenue per year
+- Movie Genre Details - most popular genre by year
 
-* Ruby version
+## Get Started
 
-* System dependencies
+This API is built with `Ruby v3.1.1` and `Rails v7.0.2`.
+It uses `sqlite3` as the database for ActiveRecord.
 
-* Configuration
+### Install dependencies
+  
+Run `bundle install`
 
-* Database creation
+### Setup the database
 
-* Database initialization
+Run `bundle exec rake db:setup` 
 
-* How to run the test suite
+This will create your database and load the schema. Note that this command also runs `db:seed` to seed your database, but we'll be seeding it a bit differently.
 
-* Services (job queues, cache servers, search engines, etc.)
+There is a dataset of movies in a `csv` file located at `./the-movies-dataset/movies_metadata.csv`. 
 
-* Deployment instructions
+Seed your database with ALL movies from the dataset (this should take 30-60 minutes:
+`rake seed_db`
 
-* ...
+Or seed your database with a selected number of movies:
+`rake seed_db[<number_of_movies>]`
+
+### Running Specs
+
+Specs are created with [rspec](https://relishapp.com/rspec/docs/gemversions) and can be run with the following command:
+
+`bundle exec rspec`
+
+## ERD
+
+<img src="./app/assets/movies_api_erd.png" style="max-width: 100%" alt="Movies API ERD">
+
+## Available Endpoints
+
+| Action | Path | Optional Parameters | Description |
+| --- | --- | --- | --- |
+| GET | /movies | none | Lists all movies |
+| GET | /production_companies | none | Lists all production companies |
+| GET | /production_companies/:id | year | Shows production company by id including all time total budget, revenue, and movies produced. If `year` parameter is provided, total budget, revenue, and movies produced are limited to specified year. |
+| GET | /genres/:year | none | Lists all genres of movies for specified year, including average popularity of each genre, in descending order |
+
+## Sample Requests
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/acaa0b78676562bae2a9?action=collection%2Fimport)
+
+## Future Work
+
+- Pagination on `/movies` endpoint
+- Additional POST `/movies` endpoint to upload a file or S3 url for additional datasets. This would utilize the `ParseMoviesMetadata` service
+- Specs needed for `ParseMoviesMetadata` service
+- More elaborate testing of controllers
+- `ParseMoviesMetadata` performance optimization
+- Request error handling 
